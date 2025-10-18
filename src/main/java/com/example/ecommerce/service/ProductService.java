@@ -1,5 +1,6 @@
 package com.example.ecommerce.service;
 
+import com.example.ecommerce.dto.ProductRequestDto;
 import com.example.ecommerce.dto.ProductResponseDto;
 import com.example.ecommerce.entity.Product;
 import com.example.ecommerce.exception.ResourceNotFoundException;
@@ -31,6 +32,12 @@ public class ProductService {
     public ProductResponseDto getProductDetails(UUID id) {
         Product product = repo.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Product Not Found"));
+        return mapper.toDto(product);
+    }
+
+    public  ProductResponseDto createProduct(ProductRequestDto productRequest) {
+        Product product = mapper.toEntity(productRequest);
+        product = repo.save(product);
         return mapper.toDto(product);
     }
 }
