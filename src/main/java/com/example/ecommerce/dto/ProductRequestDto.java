@@ -5,9 +5,11 @@ import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 
 import java.math.BigDecimal;
 
+@Data
 public class ProductRequestDto {
 
     @NotNull(message = "Product name cannot be null")
@@ -19,7 +21,7 @@ public class ProductRequestDto {
     private String description;
 
     @NotNull
-    @DecimalMin(value = "0.00", inclusive = false, message = "")
+    @DecimalMin(value = "0.00", inclusive = false, message = "Price is not valid.")
     @Digits(integer = 17, fraction = 2)
     private BigDecimal price;
 
