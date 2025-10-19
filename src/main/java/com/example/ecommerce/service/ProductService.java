@@ -6,6 +6,7 @@ import com.example.ecommerce.entity.Product;
 import com.example.ecommerce.exception.ResourceNotFoundException;
 import com.example.ecommerce.mapper.ProductMapper;
 import com.example.ecommerce.repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,9 +36,18 @@ public class ProductService {
         return mapper.toDto(product);
     }
 
-    public  ProductResponseDto createProduct(ProductRequestDto productRequest) {
+    public ProductResponseDto createProduct(ProductRequestDto productRequest) {
         Product product = mapper.toEntity(productRequest);
         product = repo.save(product);
+        return mapper.toDto(product);
+    }
+
+    @Transactional
+    public ProductResponseDto updateProduct(UUID uuid, ProductRequestDto productRequest) {
+        Product product = repo.findById(uuid).orElseThrow(
+                () -> new ResourceNotFoundException("Product Not Found"));
+
+        mapper.updateProduct(product, productRequest);
         return mapper.toDto(product);
     }
 }
