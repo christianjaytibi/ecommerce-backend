@@ -5,7 +5,6 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.context.request.WebRequest;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -14,6 +13,11 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(Exception.class)
+    public ProblemDetail handleGenericException(Exception ex) {
+        return ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ProblemDetail handleProductNotFoundException(ResourceNotFoundException ex) {
